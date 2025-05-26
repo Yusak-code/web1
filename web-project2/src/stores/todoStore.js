@@ -13,8 +13,11 @@ export const useTodoStore = defineStore('todo', {
         
     },
     actions: {
-        //increment() {
-        //   this.count++
-        // },
+        setAsDone(index) {
+            this.todoList[index].isDone = true
+         },
+        setAsUnDone(index) {
+            this.todoList[index].isDone = false
+         },
     },
 })

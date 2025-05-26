@@ -2,12 +2,14 @@
     <h1>test halaman todo list</h1>
 
     <ul>
-        <li v-for="list in todoStore.todoList">
+        <li v-for="(list, index) in todoStore.todoList">
             <span>
                 {{ list.name }}
             </span>
             <span>
-                <button>done</button>
+                <button v-if="!list.isDone" @click="todoStore.setAsDone(index)">set as done</button>
+                <button v-if="list.isDone" @click="todoStore.setAsUnDone(index)">set as undone</button>
+
             </span>
         </li>
     </ul>
