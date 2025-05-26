@@ -1,9 +1,12 @@
 <template>
     <h1>test halaman todo list</h1>
-    {{ todoStore.count }}
-    <br><br>
-    <button @click="todoStore.increment">Add</button>
 
+    <ul>
+        <li v-for="list in todoStore.todoList">
+            {{ list.name }}
+
+        </li>
+    </ul>
 </template>
 
 <script>

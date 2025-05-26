@@ -1,13 +1,20 @@
 import { defineStore } from 'pinia'
 
 export const useTodoStore = defineStore('todo', {
-    state: () => ({ count: 0, name: 'Eduardo' }),
+    state: () => ({ 
+        todoList : [
+            { name : 'Belajar HTML', isDone: false},
+            { name : 'Belajar CSS', isDone: false},
+            { name : 'Belajar JavaScript', isDone: false},
+            { name : 'Belajar PHP', isDone: false},
+        ]
+    }),
     getters: {
-        doubleCount: (state) => state.count * 2,
+        
     },
     actions: {
-        increment() {
-            this.count++
-         },
+        //increment() {
+        //   this.count++
+        // },
     },
 })
