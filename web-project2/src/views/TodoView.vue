@@ -1,6 +1,12 @@
 <template>
     <h1>test halaman todo list</h1>
 
+    <form @submit.prevent="todoStore.addTodo(newTodo)">
+        <input type="text" v-model="newTodo" placeholder="add new todo...">
+        <input type="submit" value="Add">
+    </form>
+
+
     <ul>
         <li v-for="(list, index) in todoStore.todoList">
             <span>
@@ -40,6 +46,11 @@ export default {
         const todoStore = useTodoStore()
 
         return { todoStore }
+    },
+    data() {
+        return {
+            newTodo: ''
+        }
     }
 }
 </script>
