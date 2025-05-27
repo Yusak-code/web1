@@ -5,10 +5,10 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
-   <nav>
-        <RouterLink to="/">Home</RouterLink>
+    <nav>
+        <RouterLink to="/">To Do List</RouterLink>
+        <RouterLink to="/home">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/todolist">To Do List</RouterLink>
 
       </nav>
   </header>
