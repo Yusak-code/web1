@@ -1,5 +1,7 @@
 <template>
-    <h1>test halaman todo list</h1>
+    <h1 style="text-align: center; width: 500px; inset-inline-start: 40px;">
+        Haii Yusak Ardianto!!
+    </h1>
 
     <form @submit.prevent="todoStore.addTodo(newTodo)">
         <input type="text" v-model="newTodo" placeholder="add new todo...">
