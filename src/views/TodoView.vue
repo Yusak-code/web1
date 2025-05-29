@@ -11,19 +11,57 @@
     <div style="width: 500px; padding-inline-start: 40px;">
         <h3 style="text-align: center;">My To Do List</h3>
     </div>
+    <div class="getters-button">
+        <button @click="show= 'all'">Show All</button>
+        <button @click="show= 'done only'">Done Only</button>
+        <button @click="show= 'undone only'">Undone Only</button>
+    </div>
 
-    <ul>
-        <li v-for="(list, index) in todoStore.todoList">
-            <span>
-                {{ list.name }}
-            </span>
-            <span>
-                <button v-if="!list.isDone" @click="todoStore.setAsDone(index)">set as done</button>
-                <button v-if="list.isDone" @click="todoStore.setAsUnDone(index)">set as undone</button>
+    <!-- show all todoList -->
+    <div v-if="show=='all'">
+        <ul>
+            <li v-for="(list) in todoStore.todoList">
+                <span>
+                    {{ list.name }}
+                </span>
+                <span>
+                    <button v-if="!list.isDone" @click="todoStore.setAsDone(list.name)">set as done</button>
+                    <button v-if="list.isDone" @click="todoStore.setAsUnDone(list.name)">set as undone</button>
+                </span>
+            </li>
+        </ul>
+    </div>
 
-            </span>
-        </li>
-    </ul>
+    <!-- show done todoList -->
+    <div v-if="show=='done only'">
+        <ul>
+            <li v-for="(list) in todoStore.doneOnly">
+                <span>
+                    {{ list.name }}
+                </span>
+                <span>
+                    <button v-if="!list.isDone" @click="todoStore.setAsDone(list.name)">set as done</button>
+                    <button v-if="list.isDone" @click="todoStore.setAsUnDone(list.name)">set as undone</button>
+                </span>
+            </li>
+        </ul>
+    </div>
+
+<!-- show undone only todoList -->
+    <div v-if="show=='undone only'">
+        <ul>
+            <li v-for="(list) in todoStore.undoneOnly">
+                <span>
+                    {{ list.name }}
+                </span>
+                <span>
+                    <button v-if="!list.isDone" @click="todoStore.setAsDone(list.name)">set as done</button>
+                    <button v-if="list.isDone" @click="todoStore.setAsUnDone(list.name)">set as undone</button>
+
+                </span>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <style scoped>
@@ -53,6 +91,13 @@
         justify-content: space-between;
     }
 
+    .getters-button {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        width: 500px; padding-inline-start: 40px;
+    }
+
 </style>
 
 <script>
@@ -66,7 +111,8 @@ export default {
     },
     data() {
         return {
-            newTodo: ''
+            newTodo: '',
+            show: 'all'
         }
     }
 }
