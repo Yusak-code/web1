@@ -1,4 +1,11 @@
 {
+  "name": "web1",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'No build needed'"
+  }
+}
+{
   "dependencies": {
     "pinia": "^3.0.2"
   }
