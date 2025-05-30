@@ -11,11 +11,13 @@
     <div style="width: 500px; padding-inline-start: 40px;">
         <h3 style="text-align: center;">My To Do List</h3>
     </div>
+    
     <div class="getters-button">
         <button @click="show= 'all'">Show All</button>
         <button @click="show= 'done only'">Done Only</button>
         <button @click="show= 'undone only'">Undone Only</button>
     </div>
+    
 
     <!-- show all todoList -->
     <div v-if="show=='all'">
@@ -65,9 +67,143 @@
 </template>
 
 <style scoped>
+    
+
+    * {
+    box-sizing: border-box;
+    }
+
+    h1, h3 {
+    text-align: center;
+    color: #333;
+    }
+
+    form {
+    width: 500px;
+    padding-inline-start: 40px;
+    margin-bottom: 40px;
+    display: flex;
+    gap: 10px;
+    }
+
+    form input[type="text"] {
+    padding: 10px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    }
+
+    form input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    }
+
+    form input[type="submit"]:hover {
+    background-color: #0056b3;
+    }
+
+    ul {
+    list-style: none;
+    width: 500px;
+    padding-inline-start: 40px;
+    padding: 0;
+    }
+
+    li {
+    border: 1px solid #ddd;
+    border-left: 6px solid #ccc;
+    margin: 10px 0;
+    padding: 12px 20px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    transition: box-shadow 0.3s;
+    }
+
+    li:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    li.done {
+    border-left-color: #28a745;
+    background-color: #e9f7ef;
+    }
+
+    li.undone {
+    border-left-color: #6c757d;
+    }
+
+    li span:first-child {
+    flex: 1;
+    font-weight: 500;
+    color: #333;
+    }
+
+    li button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s;
+    }
+
+    li button:first-of-type {
+    background-color: #28a745;
+    color: white;
+    }
+
+    li button:first-of-type:hover {
+    background-color: #218838;
+    }
+
+    li button:last-of-type {
+    background-color: #ffc107;
+    color: black;
+    }
+
+    li button:last-of-type:hover {
+    background-color: #e0a800;
+    }
+
+    .getters-button {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 500px;
+    padding-inline-start: 40px;
+    margin-bottom: 20px;
+    }
+
+    .getters-button button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #6c757d;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+    }
+
+    .getters-button button:hover {
+    background-color: #5a6268;
+    }
+    * {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    }
+
+
     form {
         width: 500px;
-        padding-inline-start: 40px;
+        padding-inline-start: 10px;
         margin-bottom: 40px;
     }
     form input {
@@ -101,19 +237,18 @@
 </style>
 
 <script>
-import {useTodoStore} from '../stores/todoStore'
+    import {useTodoStore} from '../stores/todoStore'
 
-export default {
-    setup() {
-        const todoStore = useTodoStore()
-
-        return { todoStore }
-    },
-    data() {
-        return {
-            newTodo: '',
-            show: 'all'
+    export default {
+        setup() {
+            const todoStore = useTodoStore()
+                return { todoStore }
+        },
+        data() {
+            return {
+                newTodo: '',
+                show: 'all'
+            }
         }
     }
-}
 </script>
