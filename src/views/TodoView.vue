@@ -8,7 +8,7 @@
         <input type="submit" value="Add">
     </form>
 
-    <div style="width: 500px; padding-inline-start: 40px;">
+    <div style="width: 500px; padding-inline-start: 10px;">
         <h3 style="text-align: center;">My To Do List</h3>
     </div>
     
@@ -231,7 +231,7 @@
         display: flex;
         justify-content: center;
         gap: 10px;
-        width: 500px; padding-inline-start: 40px;
+        width: 500px; padding-inline-start: 10px;
     }
 
 </style>
