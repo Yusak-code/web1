@@ -67,7 +67,14 @@
 </template>
 
 <style scoped>
-    
+    li {
+    transition: transform 0.2s ease, box-shadow 0.3s;
+    }
+
+    li:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
     * {
     box-sizing: border-box;
