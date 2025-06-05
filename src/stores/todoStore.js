@@ -21,6 +21,9 @@ export const useTodoStore = defineStore('todo', {
         }
     },
     actions: {
+        deleteTodo(name) {
+        this.todoList = this.todoList.filter(item => item.name !== name);
+        },
         setAsDone(name) {
             this.todoList.find(item => item.name == name).isDone = true
         },

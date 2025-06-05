@@ -1,15 +1,19 @@
 <template>
-    <h1 style="text-align: center; width: 500px; inset-inline-start: 40px;">
-        Haii Yusak Ardianto!!
-    </h1>
+    <div class="header">
+        <h1>
+            Haii Yusak Ardianto!!
+        </h1>
+    </div>
 
     <form @submit.prevent="todoStore.addTodo(newTodo)">
         <input type="text" v-model="newTodo" placeholder="add new todo...">
         <input type="submit" value="Add">
     </form>
 
-    <div style="width: 500px; padding-inline-start: 10px;">
-        <h3 style="text-align: center;">My To Do List</h3>
+    <div class="list-title">
+        <h3>
+            My To Do List
+        </h3>
     </div>
     
     <div class="getters-button">
@@ -18,55 +22,52 @@
         <button @click="show= 'undone only'">Undone Only</button>
     </div>
     
+    <li
+    v-for="list in todoStore.todoList.filter(todo =>
+    show === 'all' ||
+    (show === 'done only' && todo.isDone) ||
+    (show === 'undone only' && !todo.isDone)
+    )"
+    :key="list.name"
+    :class="list.isDone ? 'done' : 'undone'">
+        <span>{{ list.name }}</span>
+        <span>
+            <button v-if="!list.isDone" @click="todoStore.setAsDone(list.name)">Set as done</button>
+            <button v-if="list.isDone" @click="todoStore.setAsUnDone(list.name)">Set as undone</button>
+            <button @click="todoStore.deleteTodo(list.name)" style="background-color: #dc3545; color: white;">Delete</button>
+        </span>
+    </li>
 
-    <!-- show all todoList -->
-    <div v-if="show=='all'">
-        <ul>
-            <li v-for="(list) in todoStore.todoList">
-                <span>
-                    {{ list.name }}
-                </span>
-                <span>
-                    <button v-if="!list.isDone" @click="todoStore.setAsDone(list.name)">set as done</button>
-                    <button v-if="list.isDone" @click="todoStore.setAsUnDone(list.name)">set as undone</button>
-                </span>
-            </li>
-        </ul>
-    </div>
-
-    <!-- show done todoList -->
-    <div v-if="show=='done only'">
-        <ul>
-            <li v-for="(list) in todoStore.doneOnly">
-                <span>
-                    {{ list.name }}
-                </span>
-                <span>
-                    <button v-if="!list.isDone" @click="todoStore.setAsDone(list.name)">set as done</button>
-                    <button v-if="list.isDone" @click="todoStore.setAsUnDone(list.name)">set as undone</button>
-                </span>
-            </li>
-        </ul>
-    </div>
-
-<!-- show undone only todoList -->
-    <div v-if="show=='undone only'">
-        <ul>
-            <li v-for="(list) in todoStore.undoneOnly">
-                <span>
-                    {{ list.name }}
-                </span>
-                <span>
-                    <button v-if="!list.isDone" @click="todoStore.setAsDone(list.name)">set as done</button>
-                    <button v-if="list.isDone" @click="todoStore.setAsUnDone(list.name)">set as undone</button>
-
-                </span>
-            </li>
-        </ul>
-    </div>
 </template>
 
 <style scoped>
+    .header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    }
+
+    h1 {
+    font-size: 24px;
+    color: #333;
+    }
+
+    .list-title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    }
+
+    .getters-button {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; 
+    gap: 10px;
+    margin: 10px auto 30px auto;
+    max-width: 500px;
+    }
+
     li {
     transition: transform 0.2s ease, box-shadow 0.3s;
     }
@@ -207,18 +208,8 @@
     font-family: 'Inter', sans-serif;
     }
 
-
-    form {
-        width: 500px;
-        padding-inline-start: 10px;
-        margin-bottom: 40px;
-    }
     form input {
         padding: 10px;
-    }
-    form input:first-child {
-        width: 80%;
-        margin: 0px 10px;
     }
 
     ul {
@@ -234,12 +225,35 @@
         justify-content: space-between;
     }
 
-    .getters-button {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        width: 500px; padding-inline-start: 10px;
+    form {
+    width: 500px;
+    margin: 20px auto;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
     }
+
+    form input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    }
+
+    form input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    }
+
+    form input[type="submit"]:hover {
+    background-color: #0056b3;
+    }
+
 
 </style>
 
