@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 
+const API_BASE = "https://yusak-todolist.yusakardianto19.workers.dev/api";
+
 export const useTodoStore = defineStore('todo', {
   state: () => ({
     todoList: []
@@ -7,17 +9,28 @@ export const useTodoStore = defineStore('todo', {
 
   actions: {
     async fetchTodos() {
-      const res = await fetch('https://<worker-url>/api/todos')
-      this.todoList = await res.json()
+      const res = await fetch(`${API_BASE}/todos`);
+      this.todoList = await res.json();
     },
 
-    async addTodo(name: string) {
-      await fetch('https://<worker-url>/api/todos', {
+    async addTodo(name) {
+      await fetch(`${API_BASE}/todos`, {
         method: 'POST',
-        body: JSON.stringify({ name }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      await this.fetchTodos()
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      });
+      await this.fetchTodos();
+    },
+
+    async deleteTodo(id) {
+      await fetch(`${API_BASE}/todos/${id}`, { method: 'DELETE' });
+      await this.fetchTodos();
+    },
+
+    async toggleTodo(id) {
+      await fetch(`${API_BASE}/todos/${id}/toggle`, { method: 'PUT' });
+      await this.fetchTodos();
     }
   }
-})
+});
+
