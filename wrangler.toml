@@ -1,10 +1,8 @@
 name = "yusak-todolist"
-compatibility_date = "2025-05-05"
-
-[site]
-bucket = "./dist"
+main = "src/index.js"
+compatibility_date = "2025-06-22"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "projectweb_db"
-database_id = "ISI_DARI_WRANGLER_D1_LIST"
+database_id = "wra"
