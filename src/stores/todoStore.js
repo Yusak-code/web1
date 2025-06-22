@@ -1,36 +1,46 @@
 import { defineStore } from 'pinia'
 
-const API_BASE = "https://yusak-todolist.yusakardianto19.workers.dev/api";
-
 export const useTodoStore = defineStore('todo', {
-  state: () => ({
-    todoList: []
-  }),
-
-  actions: {
-    async fetchTodos() {
-      const res = await fetch(`${API_BASE}/todos`);
-      this.todoList = await res.json();
+    state: () => ({ 
+        todoList : [
+            { name : 'Belajar HTML', isDone: false},
+            { name : 'Belajar CSS', isDone: false},
+            { name : 'Belajar JavaScript', isDone: false},
+            { name : 'Belajar PHP', isDone: false},
+        ]
+    }),
+    getters: {
+        showAll(state) {
+            return state.todoList
+        },
+        doneOnly(state) {
+            return state.todoList.filter(item => item.isDone)
+        },
+        undoneOnly(state) {
+            return state.todoList.filter(item => !item.isDone)
+        }
     },
+    actions: {
+        deleteTodo(name) {
+        this.todoList = this.todoList.filter(item => item.name !== name);
+        },
+        setAsDone(name) {
+            this.todoList.find(item => item.name == name).isDone = true
+        },
+        setAsUnDone(name) {
+            this.todoList.find(item => item.name == name).isDone = false
+        },
+        addTodo(data){
 
-    async addTodo(name) {
-      await fetch(`${API_BASE}/todos`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
-      });
-      await this.fetchTodos();
+            let exsist = this.todoList.filter(item => item.name == data).length
+
+            if(exsist) {
+                alert('new todo is exsisted in data')
+                return
+            }
+            this.todoList.push(
+                { name: data, isDone: false }
+            )
+        }
     },
-
-    async deleteTodo(id) {
-      await fetch(`${API_BASE}/todos/${id}`, { method: 'DELETE' });
-      await this.fetchTodos();
-    },
-
-    async toggleTodo(id) {
-      await fetch(`${API_BASE}/todos/${id}/toggle`, { method: 'PUT' });
-      await this.fetchTodos();
-    }
-  }
-});
-
+})
