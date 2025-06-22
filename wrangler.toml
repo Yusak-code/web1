@@ -1,8 +1,6 @@
 name = "yusak-todolist"
 compatibility_date = "2025-05-05"
 
-main = "src/index.ts"
-
 
 [[d1_databases]]
 binding = "DB"
