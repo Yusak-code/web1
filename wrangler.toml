@@ -1,6 +1,8 @@
 name = "yusak-todolist"
-type = "javascript"
-main = "src/index.js"
+compatibility_date = "2025-05-05"
+
+[site]
+bucket = "./dist"
 
 [[d1_databases]]
 binding = "DB"
