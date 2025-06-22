@@ -2,6 +2,8 @@ name = "yusak-todolist"
 compatibility_date = "2025-05-05"
 
 main = "./api/index.ts"
+migrations_dir = "./migrations"
+
 
 [[d1_databases]]
 binding = "DB"
