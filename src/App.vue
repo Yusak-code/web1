@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
-import { useTodoStore } from '../src/stores/todoStore'
+import { useTodoStore } from '../src/stores/todoStore.js'
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
 
 const todoStore = useTodoStore()
 const newTodo = ref('')
@@ -16,8 +18,7 @@ onMounted(() => {
   todoStore.fetchTodos?.()
 })
 
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+
 </script>
 
 <template>
