@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
-import { useTodoStore } from '../stores/todoStore'
+import { useTodoStore } from '../src/stores/todoStore'
 
 const todoStore = useTodoStore()
 const newTodo = ref('')
