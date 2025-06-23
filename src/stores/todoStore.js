@@ -1,56 +1,46 @@
-    import { defineStore } from 'pinia'
+import { defineStore } from 'pinia'
 
-    export const useTodoStore = defineStore('todo', {
-    state: () => ({
-        todoList: []
+export const useTodoStore = defineStore('todo', {
+    state: () => ({ 
+        todoList : [
+            { name : 'Belajar HTML', isDone: false},
+            { name : 'Belajar CSS', isDone: false},
+            { name : 'Belajar JavaScript', isDone: false},
+            { name : 'Belajar PHP', isDone: false},
+        ]
     }),
     getters: {
-        showAll: state => state.todoList,
-        doneOnly: state => state.todoList.filter(t => t.isDone),
-        undoneOnly: state => state.todoList.filter(t => !t.isDone)
+        showAll(state) {
+            return state.todoList
+        },
+        doneOnly(state) {
+            return state.todoList.filter(item => item.isDone)
+        },
+        undoneOnly(state) {
+            return state.todoList.filter(item => !item.isDone)
+        }
     },
     actions: {
-        async fetchTodos() {
-        const res = await fetch('https://yusak-todolist.yusakardianto19.workers.dev/api/todos')
-        this.todoList = await res.json()
+        deleteTodo(name) {
+        this.todoList = this.todoList.filter(item => item.name !== name);
         },
-        async addTodo(name) {
-        const exists = this.todoList.some(t => t.name === name)
-        if (exists) {
-            alert('Todo sudah ada.')
-            return
+        setAsDone(name) {
+            this.todoList.find(item => item.name == name).isDone = true
+        },
+        setAsUnDone(name) {
+            this.todoList.find(item => item.name == name).isDone = false
+        },
+        addTodo(data){
+
+            let exsist = this.todoList.filter(item => item.name == data).length
+
+            if(exsist) {
+                alert('new todo is exsisted in data')
+                return
+            }
+            this.todoList.push(
+                { name: data, isDone: false }
+            )
         }
-        const res = await fetch('https://yusak-todolist.yusakardianto19.workers.dev/api/todos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name })
-        })
-        const newTodo = await res.json()
-        this.todoList.push(newTodo)
-        },
-        async deleteTodo(name) {
-        await fetch(`https://yusak-todolist.yusakardianto19.workers.dev/api/todos/${encodeURIComponent(name)}`, {
-            method: 'DELETE'
-        })
-        this.todoList = this.todoList.filter(t => t.name !== name)
-        },
-        async setAsDone(name) {
-        await fetch(`https://yusak-todolist.yusakardianto19.workers.dev/api/todos/${encodeURIComponent(name)}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isDone: true })
-        })
-        const todo = this.todoList.find(t => t.name === name)
-        if (todo) todo.isDone = true
-        },
-        async setAsUnDone(name) {
-        await fetch(`https://yusak-todolist.yusakardianto19.workers.dev/api/todos/${encodeURIComponent(name)}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isDone: false })
-        })
-        const todo = this.todoList.find(t => t.name === name)
-        if (todo) todo.isDone = false
-        }
-    }
-    })
+    },
+})
