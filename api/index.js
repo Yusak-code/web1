@@ -1,63 +1,31 @@
-export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const method = request.method;
+export async function onRequest(context) {
+  const { request, env } = context
+  const url = new URL(request.url)
+  const pathname = url.pathname
 
-    // Routing API
-    if (url.pathname === "/api/todos" && method === "GET") {
-      return handleGetTodos(env);
-    }
-    if (url.pathname === "/api/todos" && method === "POST") {
-      return handleAddTodo(request, env);
-    }
-    if (url.pathname.match(/^\/api\/todos\/(\d+)$/) && method === "DELETE") {
-      const id = url.pathname.split("/").pop();
-      return handleDeleteTodo(id, env);
-    }
-    if (url.pathname.match(/^\/api\/todos\/(\d+)\/toggle$/) && method === "PUT") {
-      const id = url.pathname.split("/")[3];
-      return handleToggleTodo(id, env);
-    }
-
-    return new Response("Not Found", { status: 404 });
+  if (pathname === '/api/todos' && request.method === 'GET') {
+    const { results } = await env.DB.prepare('SELECT name, isDone FROM todos').all()
+    return Response.json(results)
   }
-};
 
-async function handleGetTodos(env) {
-  const { results } = await env.DB.prepare("SELECT * FROM todos").all();
-  return Response.json(results);
-}
+  if (pathname === '/api/todos' && request.method === 'POST') {
+    const { name } = await request.json()
+    await env.DB.prepare('INSERT INTO todos (name, isDone) VALUES (?, 0)').bind(name).run()
+    return Response.json({ name, isDone: false })
+  }
 
-async function handleAddTodo(request, env) {
-  const { name } = await request.json();
-  if (!name) return new Response("Missing name", { status: 400 });
+  if (pathname.startsWith('/api/todos/') && request.method === 'DELETE') {
+    const name = decodeURIComponent(pathname.split('/').pop())
+    await env.DB.prepare('DELETE FROM todos WHERE name = ?').bind(name).run()
+    return new Response('Deleted', { status: 200 })
+  }
 
-  await env.DB.prepare("INSERT INTO todos (name, isDone) VALUES (?, ?) ")
-    .bind(name, false)
-    .run();
+  if (pathname.startsWith('/api/todos/') && request.method === 'PUT') {
+    const name = decodeURIComponent(pathname.split('/').pop())
+    const { isDone } = await request.json()
+    await env.DB.prepare('UPDATE todos SET isDone = ? WHERE name = ?').bind(isDone ? 1 : 0, name).run()
+    return new Response('Updated', { status: 200 })
+  }
 
-  return new Response("Created", { status: 201 });
-}
-
-async function handleDeleteTodo(id, env) {
-  await env.DB.prepare("DELETE FROM todos WHERE id = ?")
-    .bind(id)
-    .run();
-
-  return new Response("Deleted", { status: 200 });
-}
-
-async function handleToggleTodo(id, env) {
-  const { results } = await env.DB.prepare("SELECT isDone FROM todos WHERE id = ?")
-    .bind(id)
-    .all();
-
-  if (!results.length) return new Response("Todo not found", { status: 404 });
-
-  const current = results[0].isDone;
-  await env.DB.prepare("UPDATE todos SET isDone = ? WHERE id = ?")
-    .bind(!current, id)
-    .run();
-
-  return new Response("Toggled", { status: 200 });
+  return new Response('Not Found', { status: 404 })
 }

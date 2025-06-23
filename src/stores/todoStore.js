@@ -4,59 +4,53 @@ export const useTodoStore = defineStore('todo', {
   state: () => ({
     todoList: []
   }),
+  getters: {
+    showAll: state => state.todoList,
+    doneOnly: state => state.todoList.filter(t => t.isDone),
+    undoneOnly: state => state.todoList.filter(t => !t.isDone)
+  },
   actions: {
     async fetchTodos() {
-      const res = await fetch('/api/todos');
-      if (res.ok) {
-        this.todoList = await res.json();
-      }
+      const res = await fetch('https://yusak-todolist.yusakardianto19.workers.dev/api/todos')
+      this.todoList = await res.json()
     },
-
     async addTodo(name) {
-      const exists = this.todoList.some(item => item.name === name);
+      const exists = this.todoList.some(t => t.name === name)
       if (exists) {
-        alert('Todo already exists');
-        return;
+        alert('Todo sudah ada.')
+        return
       }
-      const res = await fetch('/api/todos', {
+      const res = await fetch('https://yusak-todolist.yusakardianto19.workers.dev/api/todos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name })
-      });
-      if (res.ok) {
-        await this.fetchTodos();
-      }
+      })
+      const newTodo = await res.json()
+      this.todoList.push(newTodo)
     },
-
-    async deleteTodo(id) {
-      const res = await fetch(`/api/todos/${id}`, {
+    async deleteTodo(name) {
+      await fetch(`https://yusak-todolist.yusakardianto19.workers.dev/api/todos/${encodeURIComponent(name)}`, {
         method: 'DELETE'
-      });
-      if (res.ok) {
-        this.todoList = this.todoList.filter(item => item.id !== id);
-      }
+      })
+      this.todoList = this.todoList.filter(t => t.name !== name)
     },
-
-    async toggleTodo(id) {
-      const res = await fetch(`/api/todos/${id}/toggle`, {
-        method: 'PUT'
-      });
-      if (res.ok) {
-        this.todoList = this.todoList.map(item =>
-          item.id === id ? { ...item, isDone: !item.isDone } : item
-        );
-      }
-    }
-  },
-  getters: {
-    showAll(state) {
-      return state.todoList;
+    async setAsDone(name) {
+      await fetch(`https://yusak-todolist.yusakardianto19.workers.dev/api/todos/${encodeURIComponent(name)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isDone: true })
+      })
+      const todo = this.todoList.find(t => t.name === name)
+      if (todo) todo.isDone = true
     },
-    doneOnly(state) {
-      return state.todoList.filter(item => item.isDone);
-    },
-    undoneOnly(state) {
-      return state.todoList.filter(item => !item.isDone);
+    async setAsUnDone(name) {
+      await fetch(`https://yusak-todolist.yusakardianto19.workers.dev/api/todos/${encodeURIComponent(name)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isDone: false })
+      })
+      const todo = this.todoList.find(t => t.name === name)
+      if (todo) todo.isDone = false
     }
   }
-});
+})
