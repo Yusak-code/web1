@@ -1,26 +1,21 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useTodoStore } from '../stores/todoStore'
 
-export default {
-  setup() {
-    const todoStore = useTodoStore()
+const todoStore = useTodoStore()
+const newTodo = ref('')
+const show = ref('all')
 
-    onMounted(() => {
-      todoStore.fetchTodos()
-    })
+const filteredTodos = computed(() => {
+  if (show.value === 'done only') return todoStore.doneOnly
+  if (show.value === 'undone only') return todoStore.undoneOnly
+  return todoStore.showAll
+})
 
-    return {
-      todoStore
-    }
-  },
-  data() {
-    return {
-      newTodo: '',
-      show: 'all'
-    }
-  }
-}
+onMounted(() => {
+  todoStore.fetchTodos?.()
+})
+
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 </script>
