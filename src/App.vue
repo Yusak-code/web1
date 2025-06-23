@@ -1,4 +1,26 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useTodoStore } from '../stores/todoStore'
+
+export default {
+  setup() {
+    const todoStore = useTodoStore()
+
+    onMounted(() => {
+      todoStore.fetchTodos()
+    })
+
+    return {
+      todoStore
+    }
+  },
+  data() {
+    return {
+      newTodo: '',
+      show: 'all'
+    }
+  }
+}
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 </script>
