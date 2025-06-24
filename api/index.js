@@ -1,8 +1,9 @@
-import { createPinia } from 'pinia';
-const pinia = createPinia();
+import { Hono } from 'hono'
+
+const app = new Hono()
 
 app.get('/api', (c) => {
-  return c.text('hi');
+  return c.text('hi')
 })
 
 app.get('/api/products', async (c) => {
@@ -12,8 +13,8 @@ app.get('/api/products', async (c) => {
 
 app.post('/api/products', async (c) => {
   const input = await c.req.json()
-  const query = `INSERT INTO products(name,price) values ("${input.name}","${input.price}")`
-  const newData = await c.env.DB.exec(query)
+  const query = `INSERT INTO products(name,price) values (?, ?)`
+  const newData = await c.env.DB.prepare(query).bind(input.name, input.price).run()
   return c.json(newData)
 })
 
@@ -25,23 +26,20 @@ app.get('/api/products/:id', async (c) => {
 
 app.put('/api/products/:id', async (c) => {
   const id = c.req.param('id')
-
   const input = await c.req.json()
-  const query = `UPDATE products SET name = "${input.name}", price = "${input.price}" WHERE id = "${id}"`
-  const data = await c.env.DB.exec(query)
-
+  const query = `UPDATE products SET name = ?, price = ? WHERE id = ?`
+  const data = await c.env.DB.prepare(query).bind(input.name, input.price, id).run()
   return c.json(data)
 })
 
 app.delete('/api/products/:id', async (c) => {
   const id = c.req.param('id')
-
-  const query = `DELETE FROM products WHERE id = "${id}"`
-  const data = await c.env.DB.exec(query)
-
+  const query = `DELETE FROM products WHERE id = ?`
+  const data = await c.env.DB.prepare(query).bind(id).run()
   return c.json(data)
 })
 
-app.get('*', (c) => c.env.ASSETS.fetch(c.req.raw));
+// Optional static fallback (jika kamu pakai Pages + assets)
+app.get('*', (c) => c.env.ASSETS?.fetch(c.req.raw) ?? c.text('Not found', 404))
 
-export default app;
+export default app
