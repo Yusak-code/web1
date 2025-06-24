@@ -1,5 +1,4 @@
 name = "yusak-todolist"
-pages_build_output_dir = "./dist"
 compatibility_date = "2025-06-24"
 main = "api/index.js"
 
