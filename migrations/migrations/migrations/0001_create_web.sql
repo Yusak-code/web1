@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS products (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    price INTEGER
-);
+DROP TABLE IF EXISTS todos;
 
-INSERT INTO products(name, price) VALUES ('produk 1', 5000), ('produk 2', 6000);
+CREATE TABLE todos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  is_done INTEGER DEFAULT 0
+);

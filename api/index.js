@@ -2,44 +2,31 @@ import { Hono } from 'hono'
 
 const app = new Hono()
 
-app.get('/api', (c) => {
-  return c.text('hi')
-})
+app.get('/api', (c) => c.text('API OK'))
 
-app.get('/api/products', async (c) => {
-  let { results } = await c.env.DB.prepare("SELECT * FROM products").all()
+app.get('/api/todos', async (c) => {
+  const { results } = await c.env.DB.prepare('SELECT * FROM todos').all()
   return c.json(results)
 })
 
-app.post('/api/products', async (c) => {
+app.post('/api/todos', async (c) => {
   const input = await c.req.json()
-  const query = `INSERT INTO products(name,price) values (?, ?)`
-  const newData = await c.env.DB.prepare(query).bind(input.name, input.price).run()
-  return c.json(newData)
+  const result = await c.env.DB.prepare('INSERT INTO todos (name, is_done) VALUES (?, ?)').bind(input.name, 0).run()
+  return c.json({ success: true, id: result.lastRowId })
 })
 
-app.get('/api/products/:id', async (c) => {
-  const id = c.req.param('id')
-  let { results } = await c.env.DB.prepare('SELECT * FROM products WHERE id = ?').bind(id).all()
-  return c.json(results[0])
-})
-
-app.put('/api/products/:id', async (c) => {
+app.put('/api/todos/:id', async (c) => {
   const id = c.req.param('id')
   const input = await c.req.json()
-  const query = `UPDATE products SET name = ?, price = ? WHERE id = ?`
-  const data = await c.env.DB.prepare(query).bind(input.name, input.price, id).run()
-  return c.json(data)
+  await c.env.DB.prepare('UPDATE todos SET name = ?, is_done = ? WHERE id = ?')
+    .bind(input.name, input.is_done, id).run()
+  return c.json({ success: true })
 })
 
-app.delete('/api/products/:id', async (c) => {
+app.delete('/api/todos/:id', async (c) => {
   const id = c.req.param('id')
-  const query = `DELETE FROM products WHERE id = ?`
-  const data = await c.env.DB.prepare(query).bind(id).run()
-  return c.json(data)
+  await c.env.DB.prepare('DELETE FROM todos WHERE id = ?').bind(id).run()
+  return c.json({ success: true })
 })
-
-// Optional static fallback (jika kamu pakai Pages + assets)
-app.get('*', (c) => c.env.ASSETS?.fetch(c.req.raw) ?? c.text('Not found', 404))
 
 export default app
