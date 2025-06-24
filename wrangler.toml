@@ -1,5 +1,6 @@
-name = "project-web"
-compatibility_date = "2025-06-23"
+name = "yusak-todolist"
+pages_build_output_dir = "./dist"
+compatibility_date = "2025-06-24"
 main = "api/index.js"
 
 [[d1_databases]]

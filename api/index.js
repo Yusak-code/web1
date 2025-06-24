@@ -1,6 +1,5 @@
-import { pinia } from 'pinia';
-
-const app = new pinia();
+import { createPinia } from 'pinia';
+const pinia = createPinia();
 
 app.get('/api', (c) => {
   return c.text('hi');
