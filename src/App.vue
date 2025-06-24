@@ -1,18 +1,45 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, onMounted } from 'vue'
+import { useTodoStore } from '@/stores/todoStore'
+
+const todoStore = useTodoStore()
+const newTodo = ref('')
+
+const tambah = async () => {
+  await todoStore.addTodo(newTodo.value)
+  newTodo.value = ''
+}
+
+onMounted(() => {
+  todoStore.fetchTodos()
+})
 </script>
 
-  <template>
-    <header>
-      <nav>
-          <RouterLink to="/">To Do List</RouterLink>
-          <RouterLink to="/home">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-        </nav>
-    </header>
-      <RouterView />
-  </template>
+<template>
+  <div class="container">
+    <h1>Haii Yusak Ardianto!!</h1>
+
+    <form @submit.prevent="tambah">
+      <input type="text" v-model="newTodo" placeholder="Tambah todo baru..." />
+      <button type="submit">Tambah</button>
+    </form>
+
+    <ul>
+      <li v-for="todo in todoStore.showAll" :key="todo.id">
+        <label>
+          <input
+            type="checkbox"
+            :checked="todo.is_done"
+            @change="todo.is_done ? todoStore.setAsUnDone(todo.name) : todoStore.setAsDone(todo.name)"
+          />
+          {{ todo.name }}
+        </label>
+        <button @click="todoStore.deleteTodo(todo.name)">❌</button>
+      </li>
+    </ul>
+  </div>
+</template>
+
 
   <style scoped>
     header {
