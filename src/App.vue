@@ -1,27 +1,26 @@
 <template>
   <div class="todo-app">
     <h1>Haii Yusak Ardianto!!</h1>
-    <form @submit.prevent="add">
-      <input type="text" v-model="newTodo" placeholder="Tambahkan todo baru..." />
-      <button type="submit">Tambah</button>
+    <form @submit.prevent="add" class="form">
+      <input type="text" v-model="newTodo" placeholder="add new todo..." class="input">
+      <button type="submit" class="add-btn">Add</button>
     </form>
 
-    <div>
+    <h3 class="title">My To Do List</h3>
+    <div class="filter-buttons">
       <button @click="filter = 'all'">Show All</button>
       <button @click="filter = 'done'">Done Only</button>
       <button @click="filter = 'undone'">Undone Only</button>
     </div>
 
-    <ul>
-      <li v-for="item in filtered" :key="item.id">
-        <span :style="{ textDecoration: item.isDone ? 'line-through' : 'none' }">
-          {{ item.name }}
-        </span>
-        <button v-if="!item.isDone" @click="todoStore.setAsDone(item.id)">Set as done</button>
-        <button v-if="item.isDone" @click="todoStore.setAsUnDone(item.id)">Set as undone</button>
-        <button @click="todoStore.deleteTodo(item.id)">Delete</button>
-      </li>
-    </ul>
+    <div v-for="item in filtered" :key="item.id" class="todo-item">
+      <span>{{ item.name }}</span>
+      <div class="todo-actions">
+        <button v-if="!item.isDone" @click="todoStore.setAsDone(item.id)" class="done-btn">Set as done</button>
+        <button v-else @click="todoStore.setAsUnDone(item.id)" class="undone-btn">Set as undone</button>
+        <button @click="todoStore.deleteTodo(item.id)" class="delete-btn">Delete</button>
+      </div>
+    </div>
   </div>
 </template>
 
