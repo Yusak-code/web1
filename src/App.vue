@@ -53,18 +53,70 @@ const filtered = computed(() => {
 
 <style scoped>
 .todo-app {
-  max-width: 500px;
+  max-width: 700px;
   margin: 0 auto;
   text-align: center;
+  padding: 20px;
 }
-ul {
-  list-style: none;
-  padding: 0;
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
-li {
+.input {
+  padding: 10px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.add-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.title {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.filter-buttons button {
+  margin: 0 5px;
+  padding: 8px 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
   margin-bottom: 10px;
 }
-button {
+.todo-actions button {
   margin-left: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.done-btn {
+  background-color: #28a745;
+  color: white;
+}
+.undone-btn {
+  background-color: #ffc107;
+  color: black;
+}
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
 }
 </style>
