@@ -8,7 +8,7 @@ CREATE TABLE todos (
 );
 
 INSERT INTO todos (name, is_done) VALUES
-('Belajar HTML', 0),
+('Belajar HTML', ),
 ('Belajar CSS', 0),
 ('Belajar JavaScript', 0),
 ('Belajar PHP', 0);

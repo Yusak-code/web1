@@ -82,7 +82,7 @@ const filtered = computed(() => {
   font-weight: bold;
 }
 .filter-buttons button {
-  margin: 0 5px;
+  margin: 8px 5px;
   padding: 8px 16px;
   background-color: #6c757d;
   color: white;
