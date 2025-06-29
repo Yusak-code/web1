@@ -1,79 +1,70 @@
+<template>
+  <div class="todo-app">
+    <h1>Haii Yusak Ardianto!!</h1>
+    <form @submit.prevent="add">
+      <input type="text" v-model="newTodo" placeholder="Tambahkan todo baru..." />
+      <button type="submit">Tambah</button>
+    </form>
+
+    <div>
+      <button @click="filter = 'all'">Show All</button>
+      <button @click="filter = 'done'">Done Only</button>
+      <button @click="filter = 'undone'">Undone Only</button>
+    </div>
+
+    <ul>
+      <li v-for="item in filtered" :key="item.id">
+        <span :style="{ textDecoration: item.isDone ? 'line-through' : 'none' }">
+          {{ item.name }}
+        </span>
+        <button v-if="!item.isDone" @click="todoStore.setAsDone(item.id)">Set as done</button>
+        <button v-if="item.isDone" @click="todoStore.setAsUnDone(item.id)">Set as undone</button>
+        <button @click="todoStore.deleteTodo(item.id)">Delete</button>
+      </li>
+    </ul>
+  </div>
+</template>
+
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, computed, onMounted } from 'vue'
+import { useTodoStore } from '@/stores/todoStore'
+
+const todoStore = useTodoStore()
+const newTodo = ref('')
+const filter = ref('all')
+
+onMounted(() => {
+  todoStore.fetchTodos()
+})
+
+function add() {
+  if (newTodo.value.trim() !== '') {
+    todoStore.addTodo(newTodo.value.trim())
+    newTodo.value = ''
+  }
+}
+
+const filtered = computed(() => {
+  if (filter.value === 'done') return todoStore.doneOnly
+  if (filter.value === 'undone') return todoStore.undoneOnly
+  return todoStore.showAll
+})
 </script>
 
-  <template>
-    <header>
-      <nav>
-          <RouterLink to="/">To Do List</RouterLink>
-          <RouterLink to="/home">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-        </nav>
-    </header>
-      <RouterView />
-  </template>
-
-  <style scoped>
-    header {
-      line-height: 1.5;
-      max-height: 100vh;
-    }
-
-    .logo {
-      display: block;
-      margin: 0 auto 2rem;
-    }
-
-    nav {
-      width: 100%;
-      font-size: 12px;
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    nav a.router-link-exact-active {
-      color: var(--color-text);
-    }
-
-    nav a.router-link-exact-active:hover {
-      background-color: transparent;
-    }
-
-    nav a {
-      display: inline-block;
-      padding: 0 1rem;
-      border-left: 1px solid var(--color-border);
-    }
-
-    nav a:first-of-type {
-      border: 0;
-    }
-
-    @media (min-width: 1024px) {
-      header {
-        display: flex;
-        place-items: center;
-        padding-right: calc(var(--section-gap) / 2);
-      }
-
-      .logo {
-        margin: 0 2rem 0 0;
-      }
-
-      header .wrapper {
-        display: flex;
-        place-items: flex-start;
-        flex-wrap: wrap;
-      }
-
-      nav {
-        text-align: left;
-        margin-left: -1rem;
-        font-size: 1rem;
-
-        padding: 1rem 0;
-        margin-top: 1rem;
-      }
-    }
-  </style>
+<style scoped>
+.todo-app {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  margin-bottom: 10px;
+}
+button {
+  margin-left: 5px;
+}
+</style>
