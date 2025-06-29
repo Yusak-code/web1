@@ -1,4 +1,5 @@
 <template>
+  <div class="page-background">
   <div class="todo-app">
     <h1>Haii Yusak Ardianto!!</h1>
     <form @submit.prevent="add" class="form">
@@ -22,11 +23,13 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useTodoStore } from '@/stores/todoStore'
+import bg from '@/assets/background.png'
 
 const todoStore = useTodoStore()
 const newTodo = ref('')
@@ -51,11 +54,24 @@ const filtered = computed(() => {
 </script>
 
 <style scoped>
+.page-background {
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(v-bind('bg'));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .todo-app {
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 90%;
 }
 .form {
   display: flex;
