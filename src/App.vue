@@ -1,5 +1,4 @@
 <template>
-  <div class="page-background">
   <div class="todo-app">
     <h1>Haii Yusak Ardianto!!</h1>
     <form @submit.prevent="add" class="form">
@@ -22,7 +21,6 @@
         <button @click="todoStore.deleteTodo(item.id)" class="delete-btn">Delete</button>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -55,15 +53,11 @@ const filtered = computed(() => {
 </script>
 
 <style scoped>
-.page-background {
-  min-height: 100vh;
+* {
   background-image: url(v-bind('bg'));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .todo-app {
