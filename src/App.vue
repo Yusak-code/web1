@@ -13,7 +13,7 @@
       <button @click="filter = 'undone'">Undone Only</button>
     </div>
 
-    <div v-for="item in filtered" :key="item.id" class="todo-item">
+    <div v-for="item in filtered" :key="item.id" class="todo-item" :class="{ done: item.isDone }">
       <span>{{ item.name }}</span>
       <div class="todo-actions">
         <button v-if="!item.isDone" @click="todoStore.setAsDone(item.id)" class="done-btn">Set as done</button>
@@ -53,6 +53,22 @@ const filtered = computed(() => {
 </script>
 
 <style scoped>
+.todo-item.done {
+  background-color: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.todo-item.done span {
+  text-decoration: line-through;
+  font-style: italic;
+}
+
+.todo-actions button {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 * {
   background-image: url(v-bind('bg'));
   background-repeat: no-repeat;
